@@ -1,3 +1,0 @@
-# TypeScript
-
-待更新...

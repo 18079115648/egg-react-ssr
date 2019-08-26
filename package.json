@@ -1,66 +1,80 @@
 {
-  "name": "egg-react-ssr",
-  "version": "1.2.5",
-  "description": "The Best Scheme for Server Side Rendering",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "example": "example"
+  "name": "egg-ssr-dva",
+  "version": "2.0.0",
+  "dependencies": {
+  	"axios": "^0.18.0",
+    "dva": "2.4.1",
+    "egg": "^2.21.0",
+    "egg-proxy": "^1.1.0",
+    "egg-scripts": "^2.11.0",
+    "egg-static": "^2.2.0",
+    "koa-router": "^7.4.0",
+    "react": "16.8.3",
+    "react-dev-utils": "^8.0.0",
+    "react-dom": "16.8.3",
+    "react-router-dom": "^5.0.0",
+    "ykfe-utils": "^2.0.2"
   },
   "scripts": {
-    "standard": "standard --fix",
-    "test": "TEST_ENV=true npm run test:unit",
-    "test:unit": "jest --coverage && jest-coverage-badges",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs && npm run publish",
-    "publish": "surge ./docs/.vuepress/dist ykfe.surge.sh --domain ykfe.net"
+    "debug": "egg-bin debug",
+    "start": "rimraf dist && concurrently \"npm run ssr\" \" npm run csr \"",
+    "ssr": "concurrently \"egg-bin dev\" \"cross-env NODE_ENV=development webpack --watch --config ./build/webpack.config.server.js\"",
+    "csr": "cross-env NODE_ENV=development node build/clentRender.js",
+    "prod": "npm run build && eggctl start",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.config.server.js",
+    "build:client": "cross-env NODE_ENV=production node build/clentRender.js",
+    "build": "cross-env NODE_ENV=production rimraf dist && node build/clentRender.js && npm run build:server",
+    "analyze": "cross-env NODE_ENV=production npm_config_report=true npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ykfe/egg-react-ssr.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ykfe/egg-react-ssr/issues"
-  },
-  "pre-commit": [
-    "standard"
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 9",
+    "not op_mini all"
   ],
-  "standard": {
-    "parser": "babel-eslint",
-    "ignore": [
-      "**/app/public",
-      "**/dist/",
-      "**/run/",
-      "**/log/",
-      "**/lib/",
-      "**/bin/",
-      "**/es/",
-      "packages/ykfe-utils/src/loadable.js",
-      "**/node_modules/",
-      "__mocks__"
-    ],
-    "global": [
-      "__isBrowser__",
-      "location",
-      "window"
-    ]
+  "resolutions": {
+    "browserslist": "4.6.3",
+    "caniuse-lite": "1.0.30000974"
   },
-  "homepage": "https://github.com/ykfe/egg-react-ssr#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@types/jest": "^24.0.18",
-    "babel-eslint": "^10.0.2",
-    "jest": "^24.9.0",
-    "jest-coverage-badges": "^1.1.2",
-    "lerna": "^3.8.0",
-    "pre-commit": "^1.2.2",
-    "standard": "^12.0.1",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3",
-    "vuepress": "^0.14.8",
-    "tslint": "^5.17.0",
-    "tslint-config-standard": "^8.0.1"
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.5.5",
+    "babel-loader": "8.0.4",
+    "browserslist": "^4.6.3",
+    "caniuse-lite": "1.0.30000974",
+    "concurrently": "^4.1.0",
+    "copy-webpack-plugin": "5.0.4",
+    "cross-env": "^5.2.0",
+    "css-hot-loader": "^1.4.3",
+    "css-loader": "1.0.0",
+    "css-modules-require-hook": "^4.2.3",
+    "egg-bin": "^4.13.1",
+    "file-loader": "2.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "memory-fs": "^0.4.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "nodemon": "^1.19.1",
+    "optimize-css-assets-webpack-plugin": "5.0.1",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-preset-env": "^6.0.5",
+    "postcss-safe-parser": "4.0.1",
+    "rimraf": "^2.6.3",
+    "terser-webpack-plugin": "^1.2.0",
+    "url-loader": "1.1.1",
+    "webpack": "4.19.1",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.3.3",
+    "webpack-dev-server": "3.3.1",
+    "webpack-manifest-plugin": "^2.0.4",
+    "webpack-merge": "^4.1.4",
+    "webpack-node-externals": "^1.7.2",
+    "yk-cli": "^2.0.0"
   }
 }
